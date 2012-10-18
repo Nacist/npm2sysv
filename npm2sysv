@@ -65,7 +65,7 @@ fs.writeFile(params['script-location'], tmpl, 'utf8', function (err) {
     log();
     log('To install globally:');
     log();
-    log('    $ sudo ./init.pl get_init_file > /etc/init.d/' + pkg.name);
+    log('    $ sudo bash -c "./init.pl get_init_file > /etc/init.d/' + pkg.name");
     log();
     log('For more information, see: https://github.com/symkat/Daemon-Control');
   });
