@@ -1,0 +1,23 @@
+{
+  "name": "npm2sysv",
+  "version": "0.0.0",
+  "description": "use perl's Daemon::Control and your package.json to make a LSB-compatible init script",
+  "main": "index.js",
+  "bin": {
+    "npm2sysv": "npm2sysv"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joshua Holbrook",
+  "license": "MIT/X11",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jesusabdullah/npm2sysv.git"
+  },
+  "keywords": [
+    "sysv",
+    "init",
+    "systemv"
+  ]
+}

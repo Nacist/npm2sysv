@@ -1,0 +1,63 @@
+#!/usr/bin/env node
+
+var fs = require('fs'),
+    path = require('path');
+
+var log = console.error;
+
+var tmpl, pkg, params;
+
+tmpl = [
+  '#!/usr/bin/perl',
+  'use warnings;',
+  'use strict;',
+  'use Daemon::Control;',
+  '',
+  'Daemon::Control->new({',
+  '    name        => \'{{pkg-name}}\',',
+  '    lsb_start   => \'$syslog $remote_fs\',',
+  '    lsb_stop    => \'$syslog\',',
+  '    lsb_sdesc   => \'{{pkg-name}}\',',
+  '    lsb_desc    => \'{{pkg-description}}\',',
+  '    path        => \'{{script-location}}\',',
+  '    program     => sub {',
+  '      exec \'cd {{pkg-dir}} && npm start\';',
+  '    },',
+  '    pid_file    => \'{{pkg-pidfile}}\',',
+  '    stderr_file => \'{{pkg-outlog}}\',',
+  '    stdout_file => \'{{pkg-errlog}}\',',
+  '    fork        => 2',
+  '})->run;'
+].join('\n');
+
+pkg = require(path.resolve('./', 'package.json'));
+
+if (!pkg.name) {
+  throw new Error('package.json at *least* needs a name for this to work.');
+}
+
+params = {};
+params['pkg-name'] = pkg.name;
+params['pkg-description'] = pkg.description || 'no long description given';
+params['pkg-dir'] = path.resolve('./');
+params['script-location'] = path.join(params['pkg-dir'], 'init.pl');
+params['pkg-pidfile'] = path.resolve(['/tmp', pkg.name + '.pid'].join('/'));
+params['pkg-outlog'] = params['pkg-errlog'] =
+  path.resolve(['/tmp', pkg.name + '.log'].join('/'));
+
+Object.keys(params).forEach(function (k) {
+  tmpl = tmpl.replace('{{' + k + '}}', params[k]);
+});
+
+fs.writeFile(params['script-location'], tmpl, 'utf8', function (err) {
+  if (err) throw err;
+  log('To run your new init script:');
+  log();
+  log('    $ ./init.pl start');
+  log();
+  log('To install globally:');
+  log();
+  log('    $ sudo ./init.pl get_init_file > /etc/init.d/' + pkg.name);
+  log();
+  log('For more information, see: https://github.com/symkat/Daemon-Control')
+});
