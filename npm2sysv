@@ -46,7 +46,7 @@ params['pkg-outlog'] = params['pkg-errlog'] =
   path.resolve(['/tmp', pkg.name + '.log'].join('/'));
 
 Object.keys(params).forEach(function (k) {
-  tmpl = tmpl.replace('{{' + k + '}}', params[k]);
+  tmpl = tmpl.replace(new RegExp('{{' + k + '}}', 'g'), params[k]);
 });
 
 fs.writeFile(params['script-location'], tmpl, 'utf8', function (err) {
@@ -54,6 +54,10 @@ fs.writeFile(params['script-location'], tmpl, 'utf8', function (err) {
   log('To run your new init script:');
   log();
   log('    $ ./init.pl start');
+  log();
+  log('To fine-tune the config:');
+  log();
+  log('    $ vim ./init.pl');
   log();
   log('To install globally:');
   log();
