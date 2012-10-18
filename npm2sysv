@@ -51,17 +51,22 @@ Object.keys(params).forEach(function (k) {
 
 fs.writeFile(params['script-location'], tmpl, 'utf8', function (err) {
   if (err) throw err;
-  log('To run your new init script:');
-  log();
-  log('    $ ./init.pl start');
-  log();
-  log('To fine-tune the config:');
-  log();
-  log('    $ vim ./init.pl');
-  log();
-  log('To install globally:');
-  log();
-  log('    $ sudo ./init.pl get_init_file > /etc/init.d/' + pkg.name);
-  log();
-  log('For more information, see: https://github.com/symkat/Daemon-Control')
+
+  fs.chmod(params['script-location'], 0755, function (err) {
+    if (err) throw err;
+
+    log('To run your new init script:');
+    log();
+    log('    $ ./init.pl start');
+    log();
+    log('To fine-tune the config:');
+    log();
+    log('    $ vim ./init.pl');
+    log();
+    log('To install globally:');
+    log();
+    log('    $ sudo ./init.pl get_init_file > /etc/init.d/' + pkg.name);
+    log();
+    log('For more information, see: https://github.com/symkat/Daemon-Control');
+  });
 });
