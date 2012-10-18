@@ -44,7 +44,7 @@ Daemon::Control->new({
     name        => 'img2txtbot',
     lsb_start   => '$syslog $remote_fs',
     lsb_stop    => '$syslog',
-    lsb_sdesc   => '{{pkg-name}}',
+    lsb_sdesc   => 'img2txtbot',
     lsb_desc    => 'A node.js irc bot that uses libcaca and python to turn image links into colorful text representations. Neat!',
     path        => '/home/josh/dev/img2txtbot/init.pl',
     program     => sub {
